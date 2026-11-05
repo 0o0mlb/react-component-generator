@@ -16,6 +16,11 @@ Immutable:
 - API 키를 코드, 로그, 커밋에 넣지 않는다. `.env`는 gitignore 대상이다 (.gitignore).
 - 서버 환경변수 키 값을 클라이언트로 내려보내지 않는다. `/api/config`는 `!!` 불리언만 반환한다 (server/index.ts:150-153). 이 경계를 유지한다.
 - 생성된 코드는 react-live `noInline`으로 실행된다 (src/components/LivePreview.tsx:14). 이 모드는 `render(<X />)` 호출이 있어야 그려지므로 해당 계약을 깨지 않는다.
+- 민감 파일은 읽기·수정·복사·삭제·출력을 모두 금지한다. 대상: `.env`, `.env.*`, `secrets/`, `credentials*`, `*.pem`, `*.key`, `*.p12`, `*.pfx`, `id_rsa*`, `id_ed25519*`, `.npmrc`, `.netrc`, `.git-credentials`, `~/.ssh`, `~/.aws`, `~/.kube`, `~/.config/gcloud`. `.claude/settings.json`의 `permissions.deny`가 이를 강제한다.
+  - 차단되면 우회하지 않는다. `cat`/`Get-Content`/`grep`/스크립트/MCP/서브에이전트 등 다른 경로로 같은 파일을 읽지 않는다.
+  - 환경변수 값이 필요하면 사용자에게 직접 확인을 요청한다. 키 이름만 필요할 땐 코드(`process.env.*`/`Bun.env.*` 참조)에서 찾는다.
+  - `permissions.deny` 항목을 임의로 삭제·완화하지 않는다. 변경은 사용자 요청이 있을 때만 한다.
+  - 새 민감 파일 유형이 생기면 AGENTS.md와 `permissions.deny`를 함께 갱신한다.
 
 Do:
 - 타입 전용 import는 `import type`을 쓴다 (`verbatimModuleSyntax`, tsconfig.app.json).
@@ -43,6 +48,8 @@ Stack: React 19, TypeScript, Vite, Bun(API 프록시), react-live, vitest, Anthr
 ## Standards & References
 
 - 커밋: `<type>: <한국어 요약>` (type: feat, fix, refactor, chore). 요약은 50자 내외, 마침표 없음. 절차는 `.claude/skills/commit/SKILL.md`.
+- 커밋 전 테스트 훅: `git commit` 실행 직전 `PreToolUse` 훅(`.claude/hooks/commit-guard.ts`)이 `bun run test`를 돌리고, 하나라도 실패하면 커밋을 차단한다. 훅을 끄거나 우회하지 말고 테스트를 고친다. 판별 로직은 `.claude/hooks/commit-guard-lib.ts`(테스트 포함).
+- 코드 평가: 코드를 생성·수정하는 작업을 마치면 사용자에게 완료를 보고하기 전에 `evaluator` 서브 에이전트(`.claude/agents/evaluator.md`)를 호출한다. 변경 파일 경로, 구현 의도, 실행한 lint/test/build 결과를 넘긴다. 평가자는 읽기 전용·Opus·적대적 리뷰 역할이다. 높음·중간 지적은 수정하거나 반박 근거를 사용자에게 보고한다. 문서·설정만 바꾼 경우는 생략할 수 있다.
 - 요청 없이 `git push`, `--amend`, `--force`, `--no-verify`를 쓰지 않는다.
 - 코드 주석과 UI 문구는 한국어로 쓴다 (기존 파일 관례).
 - Maintenance Policy: 이 문서의 규칙과 코드가 어긋나면 작업 중 즉시 업데이트를 제안한다.

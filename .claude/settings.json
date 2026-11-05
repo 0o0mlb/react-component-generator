@@ -1,5 +1,132 @@
 {
   "worktree": {
     "baseRef": "head"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun \"$CLAUDE_PROJECT_DIR/.claude/hooks/commit-guard.ts\"",
+            "timeout": 300
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun \"$CLAUDE_PROJECT_DIR/.claude/hooks/tdd-reminder.ts\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/.secrets/**)",
+      "Read(**/credentials)",
+      "Read(**/credentials.*)",
+      "Read(**/*credential*.json)",
+      "Read(**/*secret*.json)",
+      "Read(**/service-account*.json)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/*.p12)",
+      "Read(**/*.pfx)",
+      "Read(**/*.keystore)",
+      "Read(**/*.jks)",
+      "Read(**/id_rsa*)",
+      "Read(**/id_ed25519*)",
+      "Read(**/id_ecdsa*)",
+      "Read(**/.npmrc)",
+      "Read(**/.netrc)",
+      "Read(**/.git-credentials)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.azure/**)",
+      "Read(~/.kube/**)",
+      "Read(~/.config/gcloud/**)",
+      "Read(~/.config/gh/**)",
+      "Read(~/.docker/config.json)",
+
+      "Edit(**/.env)",
+      "Edit(**/.env.*)",
+      "Edit(**/secrets/**)",
+      "Edit(**/.secrets/**)",
+      "Edit(**/credentials)",
+      "Edit(**/credentials.*)",
+      "Edit(**/*credential*.json)",
+      "Edit(**/*secret*.json)",
+      "Edit(**/service-account*.json)",
+      "Edit(**/*.pem)",
+      "Edit(**/*.key)",
+      "Edit(**/*.p12)",
+      "Edit(**/*.pfx)",
+      "Edit(**/*.keystore)",
+      "Edit(**/*.jks)",
+      "Edit(**/id_rsa*)",
+      "Edit(**/id_ed25519*)",
+      "Edit(**/id_ecdsa*)",
+      "Edit(**/.npmrc)",
+      "Edit(**/.netrc)",
+      "Edit(**/.git-credentials)",
+      "Edit(~/.ssh/**)",
+      "Edit(~/.aws/**)",
+      "Edit(~/.azure/**)",
+      "Edit(~/.kube/**)",
+      "Edit(~/.config/gcloud/**)",
+      "Edit(~/.config/gh/**)",
+      "Edit(~/.docker/config.json)",
+
+      "Bash(cat *.env*)",
+      "Bash(head *.env*)",
+      "Bash(tail *.env*)",
+      "Bash(less *.env*)",
+      "Bash(more *.env*)",
+      "Bash(grep * *.env*)",
+      "Bash(rg * *.env*)",
+      "Bash(cp *.env* *)",
+      "Bash(mv *.env* *)",
+      "Bash(rm *.env*)",
+      "Bash(source *.env*)",
+      "Bash(. *.env*)",
+      "Bash(cat *credential*)",
+      "Bash(cat *secret*)",
+      "Bash(cat *.pem)",
+      "Bash(cat *.key)",
+      "Bash(cat *id_rsa*)",
+      "Bash(cat *id_ed25519*)",
+      "Bash(cat ~/.ssh/*)",
+      "Bash(cat ~/.aws/*)",
+      "Bash(printenv*)",
+
+      "PowerShell(Get-Content *.env*)",
+      "PowerShell(gc *.env*)",
+      "PowerShell(type *.env*)",
+      "PowerShell(cat *.env*)",
+      "PowerShell(Select-String * *.env*)",
+      "PowerShell(Copy-Item *.env* *)",
+      "PowerShell(Move-Item *.env* *)",
+      "PowerShell(Remove-Item *.env*)",
+      "PowerShell(Get-Content *credential*)",
+      "PowerShell(Get-Content *secret*)",
+      "PowerShell(Get-Content *.pem)",
+      "PowerShell(Get-Content *.key)",
+      "PowerShell(Get-Content *id_rsa*)",
+      "PowerShell(Get-Content *id_ed25519*)",
+      "PowerShell(Get-Content ~/.ssh/*)",
+      "PowerShell(Get-Content ~/.aws/*)",
+      "PowerShell(Get-ChildItem env:*)",
+      "PowerShell(dir env:*)",
+      "PowerShell(ls env:*)"
+    ]
   }
 }
