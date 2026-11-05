@@ -659,3 +659,22 @@
     animation: none;
   }
 }
+
+.prompt-meta {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.prompt-counter {
+  color: #7b8394;
+  font-variant-numeric: tabular-nums;
+}
+
+.prompt-counter-over,
+.prompt-error {
+  color: #c62828;
+  font-weight: 700;
+}
