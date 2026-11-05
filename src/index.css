@@ -1,0 +1,51 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: light;
+  font-synthesis: none;
+  --desk: #0a4f9e;
+  --desk-deep: #083f80;
+  --ink: #0d0d16;
+  --panel: #dfe3ea;
+  --panel-shade: #9aa2b1;
+  --paper: #ffffff;
+  --orange: #ff8a14;
+  --orange-deep: #d96d00;
+  --ok: #17803d;
+  --bad: #c62828;
+}
+
+body {
+  min-height: 100vh;
+  font-family: Galmuri11, 'Malgun Gothic', ui-monospace, monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink);
+  background-color: var(--desk);
+  /* 2px dither, like an old 4-colour desktop */
+  background-image:
+    linear-gradient(45deg, var(--desk-deep) 25%, transparent 25%, transparent 75%, var(--desk-deep) 75%),
+    linear-gradient(45deg, var(--desk-deep) 25%, transparent 25%, transparent 75%, var(--desk-deep) 75%);
+  background-size: 4px 4px;
+  background-position: 0 0, 2px 2px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--orange);
+  color: var(--ink);
+}
