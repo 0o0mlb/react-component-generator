@@ -24,6 +24,6 @@ Vite + React 19 프론트엔드. `hooks/useComponentGenerator.ts`가 `/api/gener
 ## Local Golden Rules
 
 - 테스트 경계: 훅과 `LivePreview`, `CodeView`, `ComponentCard`에는 테스트가 없다. 동작 변경 시 테스트 추가를 우선한다.
-- API 키 상태는 컴포넌트 메모리(`useState`)에만 둔다 (src/App.tsx:14). `localStorage` 등에 저장하지 않는다 (코드베이스에 저장 코드 없음, 보안 경계 유지).
+- API 키는 provider별로 `localStorage`(`rcg.apiKeys`)에 평문 저장된다 (사용자 요청으로 허용). 이 키를 로그, 에러 메시지, 서버 응답으로 내보내지 않는다. 영속화 키는 `src/utils/storage.ts`의 `STORAGE_KEYS`로만 관리한다. provider, 프롬프트 히스토리, 생성 컴포넌트 목록도 같은 방식으로 저장된다.
 - 키 입력이 비어 있고 서버 env 키도 없으면 요청 자체를 막는다 (src/App.tsx:34). 이 검증을 서버 검증으로만 대체하지 않는다.
 - `generate`에 키가 비면 `apiKey` 필드를 보내지 않는다 (`...(apiKey && { apiKey })`, src/hooks/useComponentGenerator.ts:26). 빈 문자열을 보내면 서버의 env 키 폴백(`clientKey || ENV_KEYS`)은 동작하지만 계약을 유지한다.
